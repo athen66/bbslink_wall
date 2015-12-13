@@ -18,18 +18,13 @@ if len(sys.argv) < 3:
 #  Version 0.1.beta  13th December 2015
 #  (C)2015 Christopher Taylor. All Rights Reserved.
 #
-#  You can contact me at : ctaylor@kiwi.net
-#  or at Dogtown BBS @ bbs.kiwi.net
-#
-#
+#  Insert your system's BBSlink.net log in credentials between the "" below:
+
 #  Mystic BBS Configuration:
 #  Command: (D-) Exec door (no dropfile)
 #     Data: /mystic/scripts/wall.py %# %U
 #
-#
-#  Insert your system's BBSlink.net log in credentials between the "" below:
-#
-#
+
 host = "games.bbslink.net" # Server address, usually 'games.bbslink.net'
 syscode = "" # Your system code
 authcode = "" # Your system's authorisation code
@@ -38,13 +33,21 @@ schemecode = "" # Scheme code
 userno = sys.argv[1]
 username = sys.argv[2]
 
+dg = "[30m"
+red = "[31m"
+gray = "[0m"
+white = "[37m"
+
 yes = set(['yes','y', 'ye'])
 no = set(['no','n'])
 
+os.system("stty echo")
 clear = lambda: os.system('clear')
+
 def ShowWall():
     # Show splash
-    print "Reading the wall..."
+    clear()
+    print red + "Reading the wall..."
 
     # Get ANSI text from BBSlink server
     conn = httplib.HTTPConnection(host, 80, timeout=5)
@@ -100,7 +103,7 @@ def SendToServer(action, data):
 ShowWall()
 
 # Ask user if they want to write to the wall themselves
-choice = raw_input("Write on the wall [Y/n]? ")[0].lower()
+choice = raw_input(red + "Write on the wall [Y/n]? ")[0].lower()
 if choice in no:
     sys.exit(0)
 elif choice in yes:
@@ -108,7 +111,7 @@ elif choice in yes:
 else:
     sys.exit(0)
 
-print "What's on your mind, " + username + "? (max 64 characters)"
+print red + "What's on your mind, " + username + "? (max 64 characters)"
 wallmsg = raw_input()
 
 if len(wallmsg) > 2:
@@ -135,4 +138,4 @@ time.sleep(0.70)
 clear()
 ShowWall()
 
-raw_input("Press any key to continue.")
+raw_input("[0;40;37mPress [1;30m[[37mEnter[30m][0m to continue.")
