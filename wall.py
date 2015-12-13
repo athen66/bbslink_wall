@@ -22,14 +22,14 @@ if len(sys.argv) < 3:
 #  or at Dogtown BBS @ bbs.kiwi.net
 #
 #
-
-#
 #  Mystic BBS Configuration:
 #  Command: (D-) Exec door (no dropfile)
 #     Data: /mystic/scripts/wall.py %# %U
 #
-
+#
 #  Insert your system's BBSlink.net log in credentials between the "" below:
+#
+#
 host = "games.bbslink.net" # Server address, usually 'games.bbslink.net'
 syscode = "" # Your system code
 authcode = "" # Your system's authorisation code
