@@ -18,17 +18,22 @@ if len(sys.argv) < 3:
 #  Version 0.1.beta  13th December 2015
 #  (C)2015 Christopher Taylor. All Rights Reserved.
 #
-#  Insert your system's BBSlink.net log in credentials between the "" below:
+#  You can contact me at : ctaylor@kiwi.net
+#  or at Dogtown BBS @ bbs.kiwi.net
+#
+#
 
+#
 #  Mystic BBS Configuration:
 #  Command: (D-) Exec door (no dropfile)
 #     Data: /mystic/scripts/wall.py %# %U
 #
 
+#  Insert your system's BBSlink.net log in credentials between the "" below:
 host = "games.bbslink.net" # Server address, usually 'games.bbslink.net'
-syscode = "dogtown" # Your system code
-authcode = "aWrjwxh5QwR3" # Your system's authorisation code
-schemecode = "RXy8MhGaPw9k" # Scheme code
+syscode = "" # Your system code
+authcode = "" # Your system's authorisation code
+schemecode = "" # Scheme code
 
 userno = sys.argv[1]
 username = sys.argv[2]
