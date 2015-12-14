@@ -26,20 +26,17 @@ if len(sys.argv) < 3:
 #
 
 host = "games.bbslink.net" # Server address, usually 'games.bbslink.net'
-syscode = "" # Your system code
+syscode = "dogtown" # Your system code
 authcode = "" # Your system's authorisation code
 schemecode = "" # Scheme code
 
 userno = sys.argv[1]
 username = sys.argv[2]
 
-dg = "[30m"
-red = "[31m"
-gray = "[0m"
-white = "[37m"
-
-yes = set(['yes','y', 'ye'])
-no = set(['no','n'])
+dg = "[0;40;30m"
+red = "[0;40;31m"
+gray = "[0;40;0m"
+white = "[0;40;37m"
 
 os.system("stty echo")
 clear = lambda: os.system('clear')
@@ -103,7 +100,10 @@ def SendToServer(action, data):
 ShowWall()
 
 # Ask user if they want to write to the wall themselves
-choice = raw_input(red + "Write on the wall [Y/n]? ")[0].lower()
+yes = set(['yes','y', 'ye'])
+no = set(['no','n'])
+choice = raw_input(white + "Write on the wall [Y/n]? ").lower()
+
 if choice in no:
     sys.exit(0)
 elif choice in yes:
@@ -114,25 +114,33 @@ else:
 print red + "What's on your mind, " + username + "? (max 64 characters)"
 wallmsg = raw_input()
 
-if len(wallmsg) > 2:
+if len(wallmsg) > 5:
     f = SendToServer("newuser", username);
     postresult = SendToServer("post", wallmsg)
     
     # Check result of post attempt
     if postresult == "*post":
         # Successful
-        print "\nPost successful!"
+        print "Post successful!"
     elif postresult == "*int":
         # Last post < 10 minutes ago
-        print "\nSorry, you have to wait 10 minutes between posts."
+        print "Sorry, you have to wait 10 minutes between posts."
+        time.sleep(3)
+        sys.exit()
     elif postresult == "*inval":
         # Post contained > 64 characters
-        print "\nYour post contained too many characters (max length 64 chars)."
+        print "Your post contained too many characters (max length 64 chars)."
+        time.sleep(3)
+        sys.exit()
     else:
         # Post failed, unknown reason
         print "\nPost failed :-("
+        time.sleep(3)
+        sys.exit()
 else:
-    print "\nYour post was too short!"
+    print "Your post was too short!"
+    time.sleep(3)
+    sys.exit()
 
 time.sleep(0.70)
 clear()
