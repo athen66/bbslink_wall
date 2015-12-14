@@ -1,9 +1,6 @@
 #!/usr/bin/python
 import os, commands, httplib, urllib, sys, string, random, md5, time
 
-if len(sys.argv) < 3:
-    sys.exit(1)
-
 #  **************************
 #  **************************
 #  ***                    ***
@@ -26,9 +23,12 @@ if len(sys.argv) < 3:
 #
 
 host = "games.bbslink.net" # Server address, usually 'games.bbslink.net'
-syscode = "dogtown" # Your system code
+syscode = "" # Your system code
 authcode = "" # Your system's authorisation code
 schemecode = "" # Scheme code
+
+if len(sys.argv) < 3:
+    sys.exit(1)
 
 userno = sys.argv[1]
 username = sys.argv[2]
