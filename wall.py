@@ -118,7 +118,7 @@ ShowWall()
 # Ask user if they want to write to the wall themselves
 yes = set(['yes','y', 'ye'])
 no = set(['no','n'])
-choice = raw_input(white + "Write on the wall [Y/n]? ").lower()
+choice = input(white + "Write on the wall [Y/n]? ").lower()
 
 if choice in no:
     sys.exit(0)
@@ -128,7 +128,7 @@ else:
     sys.exit(0)
 
 print(red + "What's on your mind, " + username + "? (max 64 characters)")
-wallmsg = raw_input()
+wallmsg = input()
 
 if len(wallmsg) > 5:
     f = SendToServer("newuser", username);
@@ -162,4 +162,4 @@ time.sleep(0.70)
 clear()
 ShowWall()
 
-raw_input("[0;40;37mPress [1;30m[[37mEnter[30m][0m to continue.")
+input("[0;40;37mPress [1;30m[[37mEnter[30m][0m to continue.")
