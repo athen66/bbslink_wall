@@ -13,6 +13,8 @@ import os, sys, string, random, hashlib, time, http.client
 #  ==================================
 #  
 #  Version 0.1.beta  13th December 2015
+#  Version 0.2.beta  1st August 2023 - Updated to Python3
+#
 #  (C)2015 Christopher Taylor. All Rights Reserved.
 #  of Dogtown BBS :: BBS.KIWI.NET
 #
