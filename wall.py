@@ -44,6 +44,11 @@ white = "[0;40;37m"
 os.system("stty echo")
 clear = lambda: os.system('clear')
 
+def randomString(stringLength=10):
+    """Generate a random string of fixed length """
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(stringLength))
+
 def getMD5Hash(s):
     #m = md5.new()
     #m.update(s)
@@ -77,12 +82,13 @@ def ShowWall():
 
     # Display the wall
     clear()
+    wall = str(wall)
     print(wall)
 
     return
 
 def SendToServer(action, data):
-    xkey = "".join([str(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits)) for i in xrange(0,6)])
+    xkey = randomString(6)
     scripttype = "PY"
     scriptver = "0.1.beta"
 
@@ -92,7 +98,6 @@ def SendToServer(action, data):
     token = response.read()
     h1.close
 
-    token = r1.read()
     token = str(token).strip().replace("'","").replace("b","")
 
     xauth = str(authcode)+str(token)
