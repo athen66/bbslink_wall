@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import os, commands, httplib, urllib, sys, string, random, md5, time
+import os, sys, string, random, hashlib, time, http.client
 
 #  **************************
 #  **************************
@@ -14,6 +14,7 @@ import os, commands, httplib, urllib, sys, string, random, md5, time
 #  
 #  Version 0.1.beta  13th December 2015
 #  (C)2015 Christopher Taylor. All Rights Reserved.
+#  of Dogtown BBS :: BBS.KIWI.NET
 #
 #  Insert your system's BBSlink.net log in credentials between the "" below:
 
@@ -41,21 +42,34 @@ white = "[0;40;37m"
 os.system("stty echo")
 clear = lambda: os.system('clear')
 
+def getMD5Hash(s):
+    #m = md5.new()
+    #m.update(s)
+    #rv = m.hexdigest()
+
+#   m = hashlib.md5(s)
+#   rv = m.hexdigest()
+    m = hashlib.md5()
+    m.update(s.encode())
+    rv = m.hexdigest()
+
+    return rv
+
 def ShowWall():
     # Show splash
     clear()
-    print red + "Reading the wall..."
+    print(red + "Reading the wall...")
 
     # Get ANSI text from BBSlink server
-    conn = httplib.HTTPConnection(host, 80, timeout=5)
-    conn.request("GET", "/wall.php?action=show")
-    response = conn.getresponse()
+    h1 = http.client.HTTPConnection(host)
+    h1.request("GET", "/wall.php?action=show")
+    response = h1.getresponse()
     wall = response.read()
-    conn.close
+    h1.close
 
     # Display the wall
     clear()
-    print wall
+    print(wall)
 
     return
 
@@ -64,35 +78,37 @@ def SendToServer(action, data):
     scripttype = "PY"
     scriptver = "0.1.beta"
 
-    conn = httplib.HTTPConnection(host, 80, timeout=5)
-    conn.request("GET", "/token.php?key=" + xkey)
-    response = conn.getresponse()
+    h1 = http.client.HTTPConnection(host)
+    h1.request("GET", "/token.php?key=" + xkey)
+    response = h1.getresponse()
     token = response.read()
-    conn.close
+    h1.close
 
-    m = md5.new()
-    m.update(authcode + token)
-    xauth = m.hexdigest()
+    token = r1.read()
+    token = str(token).strip().replace("'","").replace("b","")
 
-    m = md5.new()
-    m.update(schemecode+ token)
-    xcode = m.hexdigest()
+    xauth = str(authcode)+str(token)
+    xcode = str(schemecode)+str(token)
+
+    auth = getMD5Hash(xauth)
+    code = getMD5Hash(xcode)
+
 
     headers = {"X-User": userno,
                "X-System": syscode,
-               "X-Auth": xauth,
-               "X-Code": xcode,
+               "X-Auth": auth,
+               "X-Code": code,
                "X-Key": xkey,
                "X-Token": token,
                "X-Type": scripttype,
                "X-Version": scriptver,
                "X-Data": data
     }
-    conn = httplib.HTTPConnection(host, 80, timeout=5)
-    conn.request("GET", "/wall.php?action=" + action + "&key=" + xkey, "", headers)
-    response = conn.getresponse()
+    h1 = http.client.HTTPConnection(host)
+    h1.request("GET", "/wall.php?action=" + action + "&key=" + xkey, "", headers)
+    response = h1.getresponse()
     out = response.read()
-    conn.close
+    h1.close
 
     return out
 
@@ -111,7 +127,7 @@ elif choice in yes:
 else:
     sys.exit(0)
 
-print red + "What's on your mind, " + username + "? (max 64 characters)"
+print(red + "What's on your mind, " + username + "? (max 64 characters)")
 wallmsg = raw_input()
 
 if len(wallmsg) > 5:
@@ -121,24 +137,24 @@ if len(wallmsg) > 5:
     # Check result of post attempt
     if postresult == "*post":
         # Successful
-        print "Post successful!"
+        print("Post successful!")
     elif postresult == "*int":
         # Last post < 10 minutes ago
-        print "Sorry, you have to wait 10 minutes between posts."
+        print("Sorry, you have to wait 10 minutes between posts.")
         time.sleep(3)
         sys.exit()
     elif postresult == "*inval":
         # Post contained > 64 characters
-        print "Your post contained too many characters (max length 64 chars)."
+        print("Your post contained too many characters (max length 64 chars).")
         time.sleep(3)
         sys.exit()
     else:
         # Post failed, unknown reason
-        print "\nPost failed :-("
+        print("\nPost failed :-(")
         time.sleep(3)
         sys.exit()
 else:
-    print "Your post was too short!"
+    print("Your post was too short!")
     time.sleep(3)
     sys.exit()
 
