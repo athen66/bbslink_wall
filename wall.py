@@ -62,6 +62,12 @@ def ShowWall():
     clear()
     print(red + "Reading the wall...")
 
+    wall = os.system('/usr/bin/curl -s "http://games.bbslink.net/wall.php?action=show"')
+    return wall
+
+
+    ### DONT USE THIS CODE ANYMORE
+
     # Get ANSI text from BBSlink server
     h1 = http.client.HTTPConnection(host)
     h1.request("GET", "/wall.php?action=show")
